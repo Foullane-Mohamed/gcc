@@ -1,0 +1,489 @@
+#include <stdio.h>
+#include <string.h>
+
+typedef struct
+{
+  int numero_unique;
+  char nom[100];
+  char prenom[100];
+  char date_de_naissance[50];
+  char departement[50];
+  float note_generale;
+} Etudiants;
+
+Etudiants etudiant[100];
+int count = 0;
+
+void ajouter();
+void modifier_supprimer();
+void modifier();
+void supprimer();
+void afficher();
+void print_liste_donner(int x);
+void moyenne_generale();
+void moyenne_generale_departement();
+void moyenne_generale_de_luniversit();
+void statistiques();
+void nombre_detudiants();
+void etudiants_reussi();
+void Rechercher_etudiant();
+void recherche_nom();
+void liste_economie();
+void liste_math();
+void liste_physique();
+void liste_departement();
+
+int main()
+{
+  int choix;
+  printf("Gestion des etudiants de luniversite\n");
+  do
+  {
+    printf("1 : Ajouter un etudiant \n");
+    printf("2 : Modifier ou supprimer un etudiant \n");
+    printf("3 : Afficher les details dun etudiant \n");
+    printf("4 : Calculer la moyenne generale \n");
+    printf("5 : Statistiques \n");
+    printf("6 : Rechercher un etudiant\n ");
+    printf("7 : Trier  etudiant\n ");
+    printf("8 : Quitter\n");
+    printf("Siser votre choix : ");
+    scanf("%d", &choix);
+    printf("____________________________________\n");
+
+    if (choix == 1)
+    {
+      ajouter();
+    }
+    else if (choix == 2)
+    {
+      modifier_supprimer();
+    }
+    else if (choix == 3)
+    {
+      afficher();
+    }
+    else if (choix == 4)
+    {
+      moyenne_generale();
+    }
+    else if (choix == 5)
+    {
+      statistiques();
+    }
+    else if (choix == 6)
+    {
+      Rechercher_etudiant();
+    }
+    else if (choix == 7)
+    {
+      // Add the functionality for sorting here
+    }
+    else if (choix != 8)
+    {
+      printf("votre choix est invalide\n");
+    }
+
+  } while (choix != 8);
+
+  return 0;
+}
+
+void ajouter()
+{
+  char departement[20];
+  printf("Siser numero unique de l'etudiant : ");
+  scanf("%d", &etudiant[count].numero_unique);
+  printf("Siser nom de l'etudiant : ");
+  scanf("%s", etudiant[count].nom);
+  printf("Siser prenom de l'etudiant : ");
+  scanf("%s", etudiant[count].prenom);
+  printf("Siser date de naissance de l'etudiant : ");
+  scanf("%s", etudiant[count].date_de_naissance);
+
+  int valid = 0;
+
+  do
+  {
+    printf("Siser departement de l'etudiant [economie ou math ou physique] : ");
+    scanf("%s", etudiant[count].departement);
+    if (strcmp(etudiant[count].departement, "economie") == 0 || strcmp(etudiant[count].departement, "math") == 0 || strcmp(etudiant[count].departement, "physique") == 0)
+    {
+      valid = 1;
+    }
+    else
+    {
+      printf("Le departement doit etre [economie ou math ou physique] \n");
+    }
+  } while (valid != 1);
+
+  printf("Siser note generale de l'etudiant : ");
+  scanf("%f", &etudiant[count].note_generale);
+  printf("____________________________________\n");
+
+  count++;
+  printf("etudiant est ajoute\n");
+}
+
+void modifier_supprimer()
+{
+  int choix_2;
+  printf("____________________________________\n");
+
+  printf("1 : pour modifier \n");
+  printf("2 : pour supprimer \n");
+  printf("3 : Quitter le menu modifier/supprimer \n");
+  printf("Siser votre choix \n");
+
+  scanf("%d", &choix_2);
+  printf("____________________________________\n \n");
+
+  if (choix_2 == 1)
+  {
+    modifier();
+  }
+  else if (choix_2 == 2)
+  {
+    supprimer();
+  }
+  else if (choix_2 == 3)
+  {
+    return;
+  }
+  else
+  {
+    printf("votre Choix est invalide\n");
+  }
+}
+
+void modifier()
+{
+  int numero_unique_siser;
+  printf("Entrez le numéro unique de l'étudiant à modifier : ");
+  scanf("%d", &numero_unique_siser);
+  for (int i = 0; i < count; i++)
+  {
+    if (etudiant[i].numero_unique == numero_unique_siser)
+    {
+      printf("Modifiez les informations de l'etudiant\n");
+      printf("Siser numero unique de l'etudiant : \n");
+      scanf("%d", &etudiant[i].numero_unique);
+      printf("Siser nom de l'etudiant : \n");
+      scanf("%s", etudiant[i].nom);
+      printf("Siser prénom de l'etudiant : \n");
+      scanf("%s", etudiant[i].prenom);
+      printf("Siser date de naissance de l'etudiant : \n");
+      scanf("%s", etudiant[i].date_de_naissance);
+
+      int valid_2 = 0;
+      do
+      {
+        printf("Siser departement de l'etudiant [economie ou math ou physique] : \n");
+        scanf("%s", etudiant[i].departement);
+        if (strcmp(etudiant[i].departement, "economie") == 0 || strcmp(etudiant[i].departement, "math") == 0 || strcmp(etudiant[i].departement, "physique") == 0)
+        {
+          valid_2 = 1;
+        }
+        else
+        {
+          printf("Le departement doit etre [economie ou math ou physique] \n");
+        }
+      } while (valid_2 != 1);
+
+      printf("Siser note generale de l'etudiant : \n");
+      scanf("%f", &etudiant[i].note_generale);
+
+      printf("Informations de l'etudiant sont modifiees \n");
+      return;
+    }
+  }
+  printf("Etudiant non trouve\n");
+}
+
+void supprimer()
+{
+  int numero_unique_siser_2;
+  printf("Entrez le numero unique de letudiant a supprimer : \n ");
+  scanf("%d", &numero_unique_siser_2);
+  for (int i = 0; i < count; i++)
+  {
+    if (etudiant[i].numero_unique == numero_unique_siser_2)
+    {
+      for (int j = i; j < count - 1; j++)
+      {
+        etudiant[j] = etudiant[j + 1];
+      }
+      count--;
+      printf("Etudiant est supprime \n");
+      return;
+    }
+  }
+  printf("Etudiant non trouve\n");
+}
+
+void afficher()
+{
+  for (int i = 0; i < count; i++)
+  {
+    printf("____________________________________\n");
+    print_liste_donner(i);
+    printf("____________________________________\n");
+  }
+}
+
+void print_liste_donner(int x_count)
+{
+  printf("____________________________________________________________\n");
+  printf("Numero unique de l'etudiant est : %d \n", etudiant[x_count].numero_unique);
+  printf("Nom de l'etudiant est : %s \n", etudiant[x_count].nom);
+  printf("Prenom de l'etudiant est : %s \n", etudiant[x_count].prenom);
+  printf("Date de naissance de l'etudiant est : %s \n", etudiant[x_count].date_de_naissance);
+  printf("Departement de l'etudiant est : %s \n", etudiant[x_count].departement);
+  printf("Note generale de l'etudiant est : %.2f \n", etudiant[x_count].note_generale);
+}
+
+void moyenne_generale()
+{
+  int choix_5;
+
+  printf("1 : la moyenne generale de chaque departement \n");
+  printf("2 : la moyenne generale de luniversite entiere \n");
+  printf("3 : Quitter le menu moyenne generale \n");
+  printf("Siser votre choix: ");
+
+  scanf("%d", &choix_5);
+  printf("____________________________________\n");
+
+  if (choix_5 == 1)
+  {
+    moyenne_generale_departement();
+  }
+  else if (choix_5 == 2)
+  {
+    moyenne_generale_de_luniversit();
+  }
+  else if (choix_5 == 3)
+  {
+    return;
+  }
+  else
+  {
+    printf("votre choix est invalide\n");
+  }
+}
+
+void moyenne_generale_departement()
+{
+  int count_economie = 0, count_math = 0, count_physique = 0;
+  float note_generale_economie = 0, note_generale_math = 0, note_generale_physique = 0;
+
+  for (int i = 0; i < count; i++)
+  {
+    if (strcmp(etudiant[i].departement, "economie") == 0)
+    {
+      count_economie++;
+      note_generale_economie += etudiant[i].note_generale;
+    }
+    else if (strcmp(etudiant[i].departement, "math") == 0)
+    {
+      count_math++;
+      note_generale_math += etudiant[i].note_generale;
+    }
+    else if (strcmp(etudiant[i].departement, "physique") == 0)
+    {
+      count_physique++;
+      note_generale_physique += etudiant[i].note_generale;
+    }
+  }
+
+  if (count_economie > 0)
+  {
+    printf("La moyenne generale des etudiants de economie est : %.2f \n", note_generale_economie / count_economie);
+  }
+  if (count_math > 0)
+  {
+    printf("La moyenne generale des etudiants de math est : %.2f \n", note_generale_math / count_math);
+  }
+  if (count_physique > 0)
+  {
+    printf("La moyenne generale des etudiants de physique est : %.2f \n", note_generale_physique / count_physique);
+  }
+}
+
+void moyenne_generale_de_luniversit()
+{
+  float note_generale_total = 0;
+
+  for (int i = 0; i < count; i++)
+  {
+    note_generale_total += etudiant[i].note_generale;
+  }
+
+  if (count > 0)
+  {
+    printf("La moyenne generale des etudiants de luniversite est : %.2f \n", note_generale_total / count);
+  }
+  else
+  {
+    printf("Aucun etudiant trouve\n");
+  }
+}
+
+void statistiques()
+{
+  int choix_6;
+  printf("1 : Nombre des etudiants \n");
+  printf("2 : Nombre des etudiants reussi \n");
+  printf("3 : Quitter le menu statistiques \n");
+  printf("Siser votre choix: ");
+  scanf("%d", &choix_6);
+  printf("____________________________________\n");
+
+  if (choix_6 == 1)
+  {
+    nombre_detudiants();
+  }
+  else if (choix_6 == 2)
+  {
+    etudiants_reussi();
+  }
+  else if (choix_6 == 3)
+  {
+    return;
+  }
+  else
+  {
+    printf("votre choix est invalide\n");
+  }
+}
+
+void nombre_detudiants()
+{
+  printf("Le nombre total des etudiants est : %d \n", count);
+}
+
+void etudiants_reussi()
+{
+  int count_reussi = 0;
+  for (int i = 0; i < count; i++)
+  {
+    if (etudiant[i].note_generale >= 10)
+    {
+      count_reussi++;
+    }
+  }
+
+  printf("Le nombre des etudiants reussi est : %d \n", count_reussi);
+}
+
+void Rechercher_etudiant()
+{
+  int choix_rechercher;
+
+  printf("1 : Recherche par nom \n");
+  printf("2 : Recherche par departement \n");
+  printf("3 : Quitter le menu recherche \n");
+  printf("Siser votre choix: ");
+  scanf("%d", &choix_rechercher);
+  printf("____________________________________\n");
+
+  if (choix_rechercher == 1)
+  {
+    recherche_nom();
+  }
+  else if (choix_rechercher == 2)
+  {
+    liste_departement();
+  }
+  else if (choix_rechercher == 3)
+  {
+    return;
+  }
+  else
+  {
+    printf("votre choix est invalide\n");
+  }
+}
+
+void recherche_nom()
+{
+  char nom_recherche[100];
+  printf("Siser nom de l'etudiant a rechercher : ");
+  scanf("%s", nom_recherche);
+
+  for (int i = 0; i < count; i++)
+  {
+    if (strcmp(etudiant[i].nom, nom_recherche) == 0)
+    {
+      print_liste_donner(i);
+      return;
+    }
+  }
+  printf("Etudiant non trouve\n");
+}
+
+void liste_departement()
+{
+  int choix_departement;
+  printf("1 : Liste des etudiants de economie \n");
+  printf("2 : Liste des etudiants de math \n");
+  printf("3 : Liste des etudiants de physique \n");
+  printf("4 : Quitter le menu liste departement \n");
+  printf("Siser votre choix: ");
+  scanf("%d", &choix_departement);
+  printf("____________________________________\n");
+
+  if (choix_departement == 1)
+  {
+    liste_economie();
+  }
+  else if (choix_departement == 2)
+  {
+    liste_math();
+  }
+  else if (choix_departement == 3)
+  {
+    liste_physique();
+  }
+  else if (choix_departement == 4)
+  {
+    return;
+  }
+  else
+  {
+    printf("votre choix est invalide\n");
+  }
+}
+
+void liste_economie()
+{
+  for (int i = 0; i < count; i++)
+  {
+    if (strcmp(etudiant[i].departement, "economie") == 0)
+    {
+      print_liste_donner(i);
+    }
+  }
+}
+
+void liste_math()
+{
+  for (int i = 0; i < count; i++)
+  {
+    if (strcmp(etudiant[i].departement, "math") == 0)
+    {
+      print_liste_donner(i);
+    }
+  }
+}
+
+void liste_physique()
+{
+  for (int i = 0; i < count; i++)
+  {
+    if (strcmp(etudiant[i].departement, "physique") == 0)
+    {
+      print_liste_donner(i);
+    }
+  }
+}
